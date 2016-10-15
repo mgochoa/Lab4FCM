@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Lab4FCM</string>
+    <string name="title_activity_chats">ChatsActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="iniciar_sesion">Iniciar Sesion</string>
+</resources>
