@@ -13,12 +13,12 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 20;
     Button loginBtn;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private String TAG = getLocalClassName();
+    private String TAG = "LoginActivity.java";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (auth.getCurrentUser() != null) {
             Intent ingresoIntent = new Intent(LoginActivity.this, ChatsActivity.class);
             this.startActivity(ingresoIntent);
+        }else{
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setProviders(
+                                    //AuthUI.EMAIL_PROVIDER,
+                                    AuthUI.GOOGLE_PROVIDER)
+                            .build(),
+                    RC_SIGN_IN);
+
         }
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -50,23 +60,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.button) {
-            signIn();
-        }
-    }
 
-    private void signIn() {
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setProviders(
-                                //AuthUI.EMAIL_PROVIDER,
-                                AuthUI.GOOGLE_PROVIDER)
-                        .build(),
-                RC_SIGN_IN);
-    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

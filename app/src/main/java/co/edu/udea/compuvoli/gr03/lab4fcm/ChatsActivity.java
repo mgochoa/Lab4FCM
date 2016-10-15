@@ -22,6 +22,9 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import co.edu.udea.compuvoli.gr03.lab4fcm.Fragments.ChatList;
+import co.edu.udea.compuvoli.gr03.lab4fcm.Fragments.UsuariosFragment;
+
 public class ChatsActivity extends AppCompatActivity {
 
     /**
@@ -48,6 +51,7 @@ public class ChatsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        this.setTitle("Chat con Firebase");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -148,26 +152,33 @@ public class ChatsActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            if(position==0){
+                return new ChatList();
+
+            }else {
+                if (position == 1) {
+                    return new UsuariosFragment();
+                }
+            }
+            return new ChatList();
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            //return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Chats";
                 case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
+                    return "Usuarios";
             }
             return null;
         }
