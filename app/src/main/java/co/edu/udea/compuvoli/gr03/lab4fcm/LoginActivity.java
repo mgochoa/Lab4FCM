@@ -24,12 +24,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //loginBtn=(Button)findViewById(R.id.login_btn);
+        loginBtn=(Button)findViewById(R.id.login_btn);
 
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            Intent ingresoIntent = new Intent(LoginActivity.this, ChatsActivity.class);
+            Intent ingresoIntent = new Intent(LoginActivity.this, MenuActivity.class);
             this.startActivity(ingresoIntent);
         }else{
             startActivityForResult(
@@ -42,6 +42,19 @@ public class LoginActivity extends AppCompatActivity {
                     RC_SIGN_IN);
 
         }
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(
+                        AuthUI.getInstance()
+                                .createSignInIntentBuilder()
+                                .setProviders(
+                                        //AuthUI.EMAIL_PROVIDER,
+                                        AuthUI.GOOGLE_PROVIDER)
+                                .build(),
+                        RC_SIGN_IN);
+            }
+        });
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -67,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 // user is signed in!
-                startActivity(new Intent(this, ChatsActivity.class));
+                startActivity(new Intent(this, MenuActivity.class));
 
             } else {
                 Toast.makeText(LoginActivity.this, "Try again later",

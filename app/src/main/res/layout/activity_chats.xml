@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="co.edu.udea.compuvoli.gr03.lab4fcm.ChatsActivity">
+    tools:context=".MenuActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

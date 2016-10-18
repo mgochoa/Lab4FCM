@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="co.edu.udea.compuvoli.gr03.lab4fcm.ChatsActivity">
+    tools:context=".MenuActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

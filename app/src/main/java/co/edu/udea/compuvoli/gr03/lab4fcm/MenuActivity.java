@@ -25,7 +25,7 @@ import com.google.android.gms.tasks.Task;
 import co.edu.udea.compuvoli.gr03.lab4fcm.Fragments.ChatList;
 import co.edu.udea.compuvoli.gr03.lab4fcm.Fragments.UsuariosFragment;
 
-public class ChatsActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
