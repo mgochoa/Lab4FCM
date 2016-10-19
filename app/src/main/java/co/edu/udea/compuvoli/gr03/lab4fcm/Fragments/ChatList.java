@@ -2,6 +2,7 @@ package co.edu.udea.compuvoli.gr03.lab4fcm.Fragments;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,14 @@ public class ChatList extends Fragment {
 
 
                 chatMessageViewHolder.nameTv.setText(chatMessage.getUsername());
+                if(chatMessage.isState()){
+                    chatMessageViewHolder.statusTv.setText(R.string.conectado);
+                    chatMessageViewHolder.statusTv.setTextColor(Color.parseColor("#4CAF50"));
+
+                }else{
+                    chatMessageViewHolder.statusTv.setText(R.string.desconectado);
+                    chatMessageViewHolder.statusTv.setTextColor(Color.parseColor("#607D8B"));
+                }
                 if(chatMessage.getPhotoUrl()!=null){
                     Picasso.with(getContext()).load(chatMessage.getPhotoUrl()).into(chatMessageViewHolder.messengerImageView);
 
@@ -118,12 +127,14 @@ public class ChatList extends Fragment {
         public TextView nameTv;
         public CircleImageView messengerImageView;
         public ImageButton ib;
+        public TextView statusTv;
 
         public UserViewHolder(View v) {
             super(v);
             nameTv = (TextView) itemView.findViewById(R.id.username_text);
             messengerImageView = (CircleImageView) itemView.findViewById(R.id.profile_image);
             ib=(ImageButton)itemView.findViewById(R.id.btn_chat);
+            statusTv=(TextView)itemView.findViewById(R.id.status);
         }
     }
     @Override

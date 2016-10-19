@@ -29,6 +29,8 @@
         android:text="@string/enviar"
         android:paddingRight="20dp"
         android:paddingBottom="15dp"
+        android:maxWidth="10dp"
+        android:maxHeight="10dp"
         android:src="@drawable/paperplane"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"

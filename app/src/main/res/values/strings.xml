@@ -13,4 +13,9 @@
     <string name="chats_privados">CHATS PRIVADOS</string>
     <string name="anonimo">ANONIMO</string>
     <string name="chatea">Chatea!</string>
+    <string name="conectado">Online</string>
+    <string name="desconectado">Offline</string>
+    <string name="mostrar_como_conectado">Mostrar como conectado   </string>
+    <string name="cambiar_nombre_para_mostrar">Cambiar nombre para mostrar</string>
+    <string name="actualizar">Actualizar</string>
 </resources>

@@ -53,8 +53,9 @@ public class ChatActivity extends AppCompatActivity {
             myUid=extras.getString(Cons.MYUID);
             recieverUid=extras.getString(Cons.RECIEVERUID);
             this.setTitle(extras.getString(Cons.NAME));
-            mQuery= mFirebaseDatabaseReference.child(CHAT_GLOBAL);//Comentar
-           // mQuery=mFirebaseDatabaseReference.child(CHAT_PRIVADO).orderByChild("sender").startAt(myUid).endAt(myUid);
+            String messageKey=String.valueOf(myUid.hashCode()+recieverUid.hashCode());
+          //  mQuery= mFirebaseDatabaseReference.child(CHAT_GLOBAL);//Comentar
+           mQuery=mFirebaseDatabaseReference.child(CHAT_PRIVADO).orderByChild("messageKey").equalTo(messageKey);
 
             //The key argument here must match that used in the other activity
         }else {
@@ -121,10 +122,10 @@ public class ChatActivity extends AppCompatActivity {
                     mFirebaseDatabaseReference.child(CHAT_GLOBAL).push().setValue(friendlyMessage);
                     mMessageEditText.setText("");
                 }else{
-
-                    /*ChatModel friendlyMessage = new ChatModel(mMessageEditText.getText().toString(), mUsername, mPhotoUrl,myUid,recieverUid);
+                    String messageKey=String.valueOf(myUid.hashCode()+recieverUid.hashCode());
+                    ChatModel friendlyMessage = new ChatModel(mMessageEditText.getText().toString(), mUsername, mPhotoUrl,messageKey);
                     mFirebaseDatabaseReference.child(CHAT_PRIVADO).push().setValue(friendlyMessage);
-                    mMessageEditText.setText("");*/
+                    mMessageEditText.setText("");
                 }
 
 
@@ -153,5 +154,11 @@ public class ChatActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mAdapter.cleanup();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
