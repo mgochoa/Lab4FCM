@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import co.edu.udea.compuvoli.gr03.lab4fcm.POJO.ChatModel;
@@ -26,6 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
     private String CHAT_GLOBAL="ChatGlobal";
+    private String CHAT_PRIVADO="Chats";
     private DatabaseReference mFirebaseDatabaseReference;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -33,23 +35,38 @@ public class ChatActivity extends AppCompatActivity {
     EditText mMessageEditText;
     ImageButton mSendButton;
     String mUsername,mPhotoUrl;
-    ScrollView scroll;
+    String myUid,recieverUid;
+    boolean privado;
+    Query mQuery;
 
     FirebaseRecyclerAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Bundle extras = getIntent().getExtras();
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (extras != null) {
+            privado=true;
             this.setTitle(extras.getString(Cons.NAME,"Chat"));
+            myUid=extras.getString(Cons.MYUID);
+            recieverUid=extras.getString(Cons.RECIEVERUID);
+            this.setTitle(extras.getString(Cons.NAME));
+            mQuery= mFirebaseDatabaseReference.child(CHAT_GLOBAL);//Comentar
+           // mQuery=mFirebaseDatabaseReference.child(CHAT_PRIVADO).orderByChild("sender").startAt(myUid).endAt(myUid);
+
             //The key argument here must match that used in the other activity
+        }else {
+            privado=false;
+            this.setTitle("Chat Grupal");
+            mQuery= mFirebaseDatabaseReference.child(CHAT_GLOBAL);
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
         if (mFirebaseUser != null) {
             mUsername = mFirebaseUser.getDisplayName();
             mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
@@ -60,7 +77,7 @@ public class ChatActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
 
         recycler = (RecyclerView) findViewById(R.id.rv_chat);
         recycler.setHasFixedSize(true);
@@ -69,10 +86,10 @@ public class ChatActivity extends AppCompatActivity {
 
 
         recycler.setLayoutManager(llm);
-        
 
 
-        mAdapter = new FirebaseRecyclerAdapter<ChatModel, MessageViewHolder>(ChatModel.class, R.layout.item, MessageViewHolder.class, mFirebaseDatabaseReference.child(CHAT_GLOBAL)) {
+
+        mAdapter = new FirebaseRecyclerAdapter<ChatModel, MessageViewHolder>(ChatModel.class, R.layout.item, MessageViewHolder.class, mQuery) {
 
             @Override
             public void populateViewHolder(MessageViewHolder chatMessageViewHolder, ChatModel chatMessage, int position) {
@@ -98,9 +115,19 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!mMessageEditText.getText().toString().equals("")){
-                ChatModel friendlyMessage = new ChatModel(mMessageEditText.getText().toString(), mUsername,mPhotoUrl);
-                mFirebaseDatabaseReference.child(CHAT_GLOBAL).push().setValue(friendlyMessage);
-                mMessageEditText.setText("");
+                if(!privado) {
+
+                    ChatModel friendlyMessage = new ChatModel(mMessageEditText.getText().toString(), mUsername, mPhotoUrl);
+                    mFirebaseDatabaseReference.child(CHAT_GLOBAL).push().setValue(friendlyMessage);
+                    mMessageEditText.setText("");
+                }else{
+
+                    /*ChatModel friendlyMessage = new ChatModel(mMessageEditText.getText().toString(), mUsername, mPhotoUrl,myUid,recieverUid);
+                    mFirebaseDatabaseReference.child(CHAT_PRIVADO).push().setValue(friendlyMessage);
+                    mMessageEditText.setText("");*/
+                }
+
+
                 }else{
                     Snackbar.make(view, "Total"+String.valueOf(mAdapter.getItemCount()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();

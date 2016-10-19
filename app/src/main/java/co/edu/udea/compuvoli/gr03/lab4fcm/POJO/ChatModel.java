@@ -6,10 +6,10 @@ import android.net.Uri;
  * Created by Lina on 17/10/2016.
  */
 public  class ChatModel {
-    private String id;
     private String text;
     private String name;
     private String photoUrl;
+  private String messageKey;
 
     public ChatModel() {
     }
@@ -20,13 +20,23 @@ public  class ChatModel {
         this.photoUrl = photoUrl;
     }
 
-    public String getId() {
-        return id;
+    public String getMessageKey() {
+        return messageKey;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
     }
+
+    public ChatModel( String text, String name, String photoUrl, String messageKey) {
+
+        this.text = text;
+        this.name = name;
+        this.photoUrl = photoUrl;
+        this.messageKey = messageKey;
+    }
+
+
 
     public String getText() {
         return text;

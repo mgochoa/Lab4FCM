@@ -56,7 +56,6 @@ public class ChatList extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent chatIntent= new Intent(getActivity(),ChatActivity.class);
-                chatIntent.putExtra(Cons.NAME,"Chat Grupal");
                 startActivity(chatIntent);
             }
         });
@@ -72,7 +71,7 @@ public class ChatList extends Fragment {
         mAdapter = new FirebaseRecyclerAdapter<user, UserViewHolder>(user.class, R.layout.user, UserViewHolder.class, mFirebaseDatabaseReference.child(USER).orderByChild("uid")) {
             int myposition;
             @Override
-            public void populateViewHolder(UserViewHolder chatMessageViewHolder, user chatMessage, int position) {
+            public void populateViewHolder(UserViewHolder chatMessageViewHolder, final user chatMessage, int position) {
 
 
                 chatMessageViewHolder.nameTv.setText(chatMessage.getUsername());
@@ -86,7 +85,11 @@ public class ChatList extends Fragment {
                 chatMessageViewHolder.ib.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(getActivity(),ChatActivity.class));
+                        Intent chatIntent = new Intent(getActivity(),ChatActivity.class);
+                        chatIntent.putExtra(Cons.NAME,chatMessage.getUsername());
+                        chatIntent.putExtra(Cons.MYUID,mFirebaseUser.getUid());
+                        chatIntent.putExtra(Cons.RECIEVERUID,chatMessage.getUid());
+                        startActivity(chatIntent);
                     }
                 });
 

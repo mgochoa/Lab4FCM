@@ -191,4 +191,10 @@ public class MenuActivity extends AppCompatActivity {
 
         mFirebaseDatabaseReference.child("users").child(uid).child("state").setValue(false);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }
