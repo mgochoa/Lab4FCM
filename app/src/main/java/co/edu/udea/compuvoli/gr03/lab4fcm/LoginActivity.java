@@ -12,6 +12,10 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import co.edu.udea.compuvoli.gr03.lab4fcm.POJO.user;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -19,16 +23,23 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String TAG = "LoginActivity.java";
+    private DatabaseReference mFirebaseDatabaseReference;
+    private FirebaseUser mFirebaseUser;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginBtn=(Button)findViewById(R.id.login_btn);
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        if (mFirebaseAuth.getCurrentUser() != null) {
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            writeUser(mFirebaseUser.getUid(),mFirebaseUser.getDisplayName(),mFirebaseUser.getEmail(),
+                    String.valueOf(mFirebaseUser.getPhotoUrl()),true);
             Intent ingresoIntent = new Intent(LoginActivity.this, MenuActivity.class);
             this.startActivity(ingresoIntent);
         }else{
@@ -80,6 +91,11 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 // user is signed in!
+                mFirebaseUser = mFirebaseAuth.getCurrentUser();
+                if(mFirebaseUser.getUid()!=null){
+                writeUser(mFirebaseUser.getUid(),mFirebaseUser.getDisplayName(),mFirebaseUser.getEmail(),
+                        String.valueOf(mFirebaseUser.getPhotoUrl()),true);
+                }
                 startActivity(new Intent(this, MenuActivity.class));
 
             } else {
@@ -87,6 +103,11 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    private void writeUser(String uid, String username, String email,String photoUrl,boolean state) {
+        user user = new user(uid,username,email,photoUrl,state);
+
+        mFirebaseDatabaseReference.child("users").child(uid).setValue(user);
     }
 
 

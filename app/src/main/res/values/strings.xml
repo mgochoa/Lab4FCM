@@ -11,4 +11,6 @@
     <string name="enviar">Enviar</string>
     <string name="escribir_mensaje">Escribir mensaje</string>
     <string name="chats_privados">CHATS PRIVADOS</string>
+    <string name="anonimo">ANONIMO</string>
+    <string name="chatea">Chatea!</string>
 </resources>

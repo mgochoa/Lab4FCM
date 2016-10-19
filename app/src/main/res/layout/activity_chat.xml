@@ -8,20 +8,16 @@
     tools:context="co.edu.udea.compuvoli.gr03.lab4fcm.ChatActivity">
 
 
-    <ScrollView
-        android:id="@+id/sv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        >
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_chat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>
-    </ScrollView>
+
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -31,6 +27,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:text="@string/enviar"
+        android:paddingRight="20dp"
+        android:paddingBottom="15dp"
         android:src="@drawable/paperplane"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"

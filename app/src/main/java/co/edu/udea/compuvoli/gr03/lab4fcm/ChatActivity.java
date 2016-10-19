@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import co.edu.udea.compuvoli.gr03.lab4fcm.POJO.ChatModel;
+import co.edu.udea.compuvoli.gr03.lab4fcm.utils.Cons;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
@@ -40,14 +41,12 @@ public class ChatActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            this.setTitle(extras.getString("NAME","Chat"));
+            this.setTitle(extras.getString(Cons.NAME,"Chat"));
             //The key argument here must match that used in the other activity
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        scroll=(ScrollView)findViewById(R.id.sv);
-        scroll.fullScroll(View.FOCUS_DOWN);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -66,10 +65,11 @@ public class ChatActivity extends AppCompatActivity {
         recycler = (RecyclerView) findViewById(R.id.rv_chat);
         recycler.setHasFixedSize(true);
         final LinearLayoutManager llm= new LinearLayoutManager(this);
-       llm.setStackFromEnd(true);
+        llm.setStackFromEnd(true);
 
 
         recycler.setLayoutManager(llm);
+        
 
 
         mAdapter = new FirebaseRecyclerAdapter<ChatModel, MessageViewHolder>(ChatModel.class, R.layout.item, MessageViewHolder.class, mFirebaseDatabaseReference.child(CHAT_GLOBAL)) {
@@ -121,5 +121,10 @@ public class ChatActivity extends AppCompatActivity {
             messageTv = (TextView) itemView.findViewById(R.id.message);
             messengerImageView = (CircleImageView) itemView.findViewById(R.id.photo);
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.cleanup();
     }
 }
